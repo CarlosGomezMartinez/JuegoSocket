@@ -1,8 +1,8 @@
 var config = {
     type: Phaser.AUTO,
     parent: 'phaser-example',
-    width: 800,
-    height: 600,
+    width: 750,
+    height: 550,
     physics: {
       default: 'arcade',
       arcade: {
@@ -23,9 +23,11 @@ var config = {
     this.load.image('ship', 'assets/spaceShips_001.png');
     this.load.image('otherPlayer', 'assets/enemyBlack5.png');
     this.load.image('star', 'assets/star_gold.png');
+    this.load.image('background', 'assets/espacio.jpg');
   }
    
-  function create() {
+  function create() {    
+    this.add.sprite(0, 0, 'background').setOrigin(0, 0).setScale(1.3);    
     var self = this;
     this.socket = io();
     this.otherPlayers = this.physics.add.group();
@@ -71,6 +73,8 @@ var config = {
         this.socket.emit('starCollected');
       }, null, self);
     });
+
+    
   }
    
   function update() {
@@ -89,8 +93,9 @@ var config = {
         this.ship.setAcceleration(0);
       }
     
-      
-      
+      this.ship.setCollideWorldBounds(true);
+      this.ship.setBounce(0,3);
+            
       // emit player movement
       var x = this.ship.x;
       var y = this.ship.y;
@@ -106,11 +111,10 @@ var config = {
         rotation: this.ship.rotation
       };
     }
-    //this.physics.world.wrap(this.ship, 5);
   }
 
   function addPlayer(self, playerInfo) {
-    self.ship = self.physics.add.image(playerInfo.x, playerInfo.y, 'ship').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
+    self.ship = self.physics.add.image(playerInfo.x, playerInfo.y, 'ship').setOrigin(0.25, 0.25).setDisplaySize(53, 40);
     if (playerInfo.team === 'blue') {
       self.ship.setTint(0x0000ff);
     } else {
@@ -122,7 +126,7 @@ var config = {
   }
 
   function addOtherPlayers(self, playerInfo) {
-    const otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'otherPlayer').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
+    const otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'otherPlayer').setOrigin(0.25, 0.25).setDisplaySize(53, 40);
     if (playerInfo.team === 'blue') {
       otherPlayer.setTint(0x0000ff);
     } else {
