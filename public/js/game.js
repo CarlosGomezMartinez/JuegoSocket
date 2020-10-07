@@ -63,8 +63,8 @@ var config = {
     this.redScoreText = this.add.text(584, 16, '', { fontSize: '32px', fill: '#FF0000' });
   
     this.socket.on('scoreUpdate', function (scores) {
-      self.blueScoreText.setText('Blue: ' + scores.blue);
-      self.redScoreText.setText('Red: ' + scores.red);
+      self.blueScoreText.setText('Azul: ' + scores.blue);
+      self.redScoreText.setText('Rojo: ' + scores.red);
     });
     this.socket.on('starLocation', function (starLocation) {
       if (self.star) self.star.destroy();
